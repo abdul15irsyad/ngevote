@@ -8,10 +8,11 @@ const userSchema = new Schema({
   username: {type: String,required: true, index: true},
   password: {type: String,required: true},
   hashedPassword: {type: String,required: true},
+  status: {type: Boolean, default: false}
 },{
   versionKey: false
 })
 
 userSchema.plugin(mongoosePaginate)
 
-module.exports = mongoose.model("user",userSchema)
+module.exports = mongoose.model("User",userSchema)

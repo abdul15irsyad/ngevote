@@ -2,15 +2,16 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
-require('dotenv').config()
-
-const user = require('./routes/user')
+const dotenv = require('dotenv')
+dotenv.config()
 
 const port = process.env.PORT || 8000
+const hostname = process.env.HOST || 'localhost'
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:true}))
 
+// connect to mongo db
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useCreateIndex: true,
@@ -20,10 +21,12 @@ mongoose.connect(process.env.MONGODB_URI, {
   console.log(err ? err : 'database connected!')
 })
 
+// routes
 app.get('/',(req,res)=>{
-  res.send('welcome')
+  res.send(`welcome to ngevote<br>(http://${hostname}:${port})`)
 })
 
-app.use('/user',user)
+app.use('/user',require('./routes/user'))
+app.use('/candidate',require('./routes/candidate'))
 
-app.listen(port,()=>console.log(`server running on port http://localhost:${port}`))
+app.listen(port,()=>console.log(`server running on port http://${hostname}:${port}`))
