@@ -7,8 +7,7 @@ const userSchema = new Schema({
   age:{type: Number,required: true},
   username: {type: String,required: true, index: true},
   password: {type: String,required: true},
-  hashedPassword: {type: String,required: true},
-  status: {type: Boolean, default: false}
+  isActive: {type: Boolean, default: false}
 },{
   versionKey: false
 })

@@ -7,7 +7,7 @@ const User = require('../models/User')
 router.get('/:id',(req,res)=>{
   try{
     let id = req.params.id
-    User.findById(id,'-password -hashedPassword').exec((err,user)=>{
+    User.findById(id,'-password').exec((err,user)=>{
       if(user){
         res.status(200).json({
           status: true,
@@ -34,7 +34,7 @@ router.get('/',(req,res)=>{
     sort = sort == 'desc' ? -1 : 1
     User.paginate({},{
       pagination: page=="all" ? false : true,
-      select: "-password -hashedPassword",
+      select: "-password",
       page: page ? parseInt(page,10) : 1,
       limit: perpage ? parseInt(perpage,10) : 10,
       sort: {
@@ -43,7 +43,7 @@ router.get('/',(req,res)=>{
     }).then(result=>{
       res.status(200).json({
         status: true,
-        data: result
+        ...result
       })
     })
   }catch(err){
@@ -60,12 +60,10 @@ router.post('/',async (req,res)=>{
       name: req.body.name,
       age: req.body.age,
       username: req.body.username,
-      password: req.body.password,
-      hashedPassword: await bcrypt.hash(req.body.password,10),
+      password: await bcrypt.hash(req.body.password,10),
     },(err,user)=>{
       if(user){
         user.password = undefined
-        user.hashedPassword = undefined
         res.status(201).json({
           status: true,
           data: user
@@ -95,7 +93,7 @@ router.patch('/:id',async (req,res)=>{
       if(user){
         res.status(200).json({
           status: true,
-          data: await User.findById(id).select('-password -hashedPassword')
+          data: await User.findById(id).select('-password')
         })
       }else{
         res.status(404).json({
@@ -120,7 +118,7 @@ router.delete('/:id',(req,res)=>{
         res.status(200).json({
           status: true,
           message: "success delete user !",
-          data: await User.findByIdAndRemove(id).select('-password -hashedPassword')
+          data: await User.findByIdAndRemove(id).select('-password')
         })
       }else{
         res.status(404).json({

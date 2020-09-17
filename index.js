@@ -26,6 +26,7 @@ app.get('/',(req,res)=>{
   res.send(`welcome to ngevote<br>(http://${hostname}:${port})`)
 })
 
+app.use('/auth',require('./routes/auth'))
 app.use('/user',require('./routes/user'))
 app.use('/candidate',require('./routes/candidate'))
 
