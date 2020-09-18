@@ -20,33 +20,30 @@ const Header = ({title,menus,user}) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
   return (
-    <Navbar color="light" light expand="md" className='header shadow'>
+    <Navbar color="light" light expand="md" className='shadow'>
       <Container>
         <NavbarBrand tag={Link} to='/'>{title}</NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
-          <Nav className="mr-auto" navbar>
+          <Nav className="mx-auto" navbar>
             {menus.map((menu,index)=>{
               return(
-                <NavItem key={index}>
+                <NavItem key={index} className='mx-1'>
                   <NavLink tag={Link} to={menu.link}>{menu.label}</NavLink>
                 </NavItem>
               )
             })}
           </Nav>
-          <Nav className="ml-auto" navbar>
+          <Nav navbar>
             <UncontrolledDropdown nav inNavbar>
-              <DropdownToggle nav caret>
+              <DropdownToggle nav>
                 {user.username}
               </DropdownToggle>
               <DropdownMenu right>
-                <DropdownItem tag={Link} to='/profile'>
-                  Profile
-                </DropdownItem>
+                <DropdownItem tag={Link} to='/profile/abdul15irsyad'>Profile</DropdownItem>
+                <DropdownItem tag={Link} to='/settings'>Settings</DropdownItem>
                 <DropdownItem divider />
-                <DropdownItem tag={Link} to='/login'>
-                  Log Out
-                </DropdownItem>
+                <DropdownItem tag={Link} to='/login'>Log Out</DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
           </Nav>

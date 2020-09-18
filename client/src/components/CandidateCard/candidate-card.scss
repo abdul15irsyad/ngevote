@@ -2,5 +2,10 @@
   
   .footer{
     margin: auto 10px 10px;
+    display: flex;
+    
+    button{
+      width: 50%;
+    }
   }
 }

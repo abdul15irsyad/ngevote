@@ -1,16 +1,18 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { Col, Container, Form, FormGroup, Input, Label, Row } from 'reactstrap'
+import { Link, useHistory } from 'react-router-dom'
+import { Button, Col, Container, Form, FormGroup, Input, Label, Row } from 'reactstrap'
 import './login.scss'
 
 const Login = () => {
+  let history = useHistory()
   const [form,setForm] = useState({
     username: '',
     password: ''
   })
   const submitHandler = (e) => {
     e.preventDefault()
-    console.log('submit:',form)
+    console.log('login:',form)
+    history.push('/')
   }
   return (
     <Container className='login'>
@@ -31,7 +33,7 @@ const Login = () => {
                 value={form.password}
                 onChange={(e)=>{setForm({...form,password:e.target.value})}}/>
             </FormGroup>
-            <input className='btn btn-primary btn-block mt-4' type='submit' value='Login'/>
+            <Button type='submit' color='primary' className='btn-block mt-4'>Login</Button>
             <div className='forgot-password-link text-center pt-3'>
               <Link to='/forgot-password' className='text-secondary'>Forgot Password?</Link>
             </div>

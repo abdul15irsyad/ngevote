@@ -19,7 +19,8 @@ const CandidateCard = ({candidate}) => {
         <CardText><i>"{candidate.motto}"</i></CardText>
       </CardBody>
       <div className='footer'>
-        <Button color='primary' className='btn-block btn-vote'>Vote</Button>
+        <Button color='info' className='btn-vote'>Detail</Button>
+        <Button color='success' className='w-50 ml-1 btn-vote'>Vote</Button>
       </div>
     </Card>
   )

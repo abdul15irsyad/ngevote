@@ -8,7 +8,7 @@ const Home = () => {
       <Row className='justify-content-center mt-4'>
         <Col lg='9'>
           <h1>Ngevote</h1>
-          {/* <p>&emsp;&emsp;Ngevote adalah aplikasi <em>online voting</em> sederhana yang dikembangkan oleh Irsyad Abdul dengan Menggunakan MERN Stack (Mongo - Express - React - Node JS) sebagai latihan setelah belajar dari channel Youtube, Medium, dan lain lain. ^_^</p> */}
+          <p>&emsp;&emsp;Ngevote is an simple <b>online voting</b> application developed by Irsyad Abdul using the MERN Stack (Mongo - Express - React - Node JS) as an exercise after learning from the Youtube channel, Medium, and others. ^_^</p>
         </Col>
       </Row>
       <Row className='justify-content-center mt-34'>

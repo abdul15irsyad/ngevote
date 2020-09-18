@@ -3,8 +3,8 @@
   --theme-accent: #e5eaff;
 }
 
-:focus{
-  outline: none;
+*:focus{
+  outline: none !important;
 }
 
 a{

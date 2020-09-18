@@ -5,13 +5,20 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon index.js"
+    "server-dev": "nodemon index.js",
+    "server-prod": "node index.js",
+    "client-dev": "cd client && npm start",
+    "client-prod": "cd client && npm run build",
+    "dev": "concurrently \"npm run server-dev\" \"npm run client-dev\"",
+    "start": "concurrently \"npm run server-prod\" \"npm run client-prod\""
   },
   "author": "abdul15irsyad",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
+    "concurrently": "^5.3.0",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",

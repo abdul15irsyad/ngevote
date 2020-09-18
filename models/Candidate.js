@@ -5,7 +5,8 @@ const candidateSchema = new Schema({
   user: {type: mongoose.Schema.Types.ObjectId, ref:'User'},
   motto: {type: String, required:true}
 },{
-  versionKey: false
+  versionKey: false,
+  timestamps: true
 })
 
 module.exports = mongoose.model("Candidate",candidateSchema)

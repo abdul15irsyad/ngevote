@@ -2,8 +2,8 @@ const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose')
 
-const Candidate = require('../models/Candidate')
-const User = require('../models/User')
+const Candidate = require('../../models/Candidate')
+const User = require('../../models/User')
 
 router.get('/',async(req,res)=>{
   try{

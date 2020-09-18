@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Col, Container, Form, FormGroup, Input, Label, Row } from 'reactstrap'
+import { Button, Col, Container, Form, FormGroup, Input, Label, Row } from 'reactstrap'
 import { PilText } from '../../components'
 import './reset-password.scss'
 
@@ -17,7 +17,7 @@ const ResetPassword = () => {
   })
   const submitHandler = (e) => {
     e.preventDefault()
-    console.log('submit:',form)
+    console.log('reset password:',form)
   }
   return (
     <Container className='reset-password'>
@@ -47,7 +47,7 @@ const ResetPassword = () => {
             <FormGroup>
               <Input type="hidden" name="token" id="token"/>
             </FormGroup>
-            <input className='btn btn-primary btn-block mt-4' type='submit' value='Reset Password'/>
+            <Button type='submit' color='primary' className='btn-block mt-4'>Reset Password</Button>
             <div className='go-to-login-link text-center mt-3'>
               <Link to='/login' className='text-secondary'>Go To Login</Link>
             </div>

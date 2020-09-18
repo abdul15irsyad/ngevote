@@ -2,9 +2,9 @@ const express = require('express')
 const router = express.Router()
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const { checkCredential } = require('../middleware/authMiddleware')
+const { checkCredential } = require('../../middleware/authMiddleware')
 
-const User = require('../models/User')
+const User = require('../../models/User')
 
 router.post('/', async (req,res)=>{
   try{

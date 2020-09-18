@@ -3,11 +3,14 @@ const app = express()
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const dotenv = require('dotenv')
+const cors = require('cors')
+const router = require('./routes')
 dotenv.config()
 
 const port = process.env.PORT || 8000
 const hostname = process.env.HOST || 'localhost'
 
+app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:true}))
 
@@ -21,13 +24,9 @@ mongoose.connect(process.env.MONGODB_URI, {
   console.log(err ? err : 'database connected!')
 })
 
-// routes
-app.get('/',(req,res)=>{
-  res.send(`welcome to ngevote<br>(http://${hostname}:${port})`)
-})
+// app.use(express.static('./client/build'));
 
-app.use('/auth',require('./routes/auth'))
-app.use('/user',require('./routes/user'))
-app.use('/candidate',require('./routes/candidate'))
+// routes
+app.use(router)
 
 app.listen(port,()=>console.log(`server running on port http://${hostname}:${port}`))
