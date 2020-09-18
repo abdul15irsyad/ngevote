@@ -24,7 +24,7 @@ mongoose.connect(process.env.MONGODB_URI, {
   console.log(err ? err : 'database connected!')
 })
 
-// app.use(express.static('./client/build'));
+app.use(express.static('./client/build'));
 
 // routes
 app.use(router)
