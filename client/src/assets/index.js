@@ -5,6 +5,7 @@ import KlayThompsonImage from './images/candidates/klay-thompson.png'
 import GiannisAntetokounmpoImage from './images/candidates/giannis-antetokounmpo.png'
 import JimmyButlerImage from './images/candidates/jimmy-butler.png'
 import LukaDoncicImage from './images/candidates/luka-doncic.png'
+import OopsImage from './images/oooopss.svg'
 
 export {
   DefaultImage, 
@@ -13,5 +14,6 @@ export {
   KlayThompsonImage,
   GiannisAntetokounmpoImage,
   JimmyButlerImage,
-  LukaDoncicImage
+  LukaDoncicImage,
+  OopsImage
 }

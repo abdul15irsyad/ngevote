@@ -19,17 +19,18 @@ import './header.scss'
 const Header = ({title,menus,user}) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
+  const close = () => setIsOpen(false)
   return (
     <Navbar color="light" light expand="md" className='shadow'>
       <Container>
-        <NavbarBrand tag={Link} to='/'>{title}</NavbarBrand>
+        <NavbarBrand tag={Link} to='/' onClick={close}>{title}</NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mx-auto" navbar>
             {menus.map((menu,index)=>{
               return(
                 <NavItem key={index} className='mx-1'>
-                  <NavLink tag={Link} to={menu.link}>{menu.label}</NavLink>
+                  <NavLink tag={Link} to={menu.link} onClick={close}>{menu.label}</NavLink>
                 </NavItem>
               )
             })}
@@ -40,10 +41,10 @@ const Header = ({title,menus,user}) => {
                 {user.username}
               </DropdownToggle>
               <DropdownMenu right>
-                <DropdownItem tag={Link} to='/profile/abdul15irsyad'>Profile</DropdownItem>
-                <DropdownItem tag={Link} to='/settings'>Settings</DropdownItem>
+                <DropdownItem tag={Link} to='/profile/abdul15irsyad' onClick={close}>Profile</DropdownItem>
+                <DropdownItem tag={Link} to='/settings' onClick={close}>Settings</DropdownItem>
                 <DropdownItem divider />
-                <DropdownItem tag={Link} to='/login'>Log Out</DropdownItem>
+                <DropdownItem tag={Link} to='/login' onClick={close}>Log Out</DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
           </Nav>

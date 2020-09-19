@@ -12,7 +12,6 @@ const EditProfile = () => {
   })
   const submitHandler = (e) => {
     e.preventDefault()
-    console.log('edit profile:',form)
     history.push('/profile/abdul15irsyad')
   }
   return (
@@ -28,21 +27,21 @@ const EditProfile = () => {
             <FormGroup>
               <Label for="name">Name</Label>
               <Input 
-                type="text" id="name" placeholder="eg: John Doe" 
+                type="text" id="name" placeholder="John Doe" 
                 value={form.name} 
                 onChange={(e)=>{setForm({...form,name:e.target.value})}}/>
             </FormGroup>
             <FormGroup>
               <Label for="username">Username</Label>
               <Input 
-                type="text" id="username" placeholder="eg: example@email.com" 
+                type="text" id="username" placeholder="johndoe8" 
                 value={form.username} 
                 onChange={(e)=>{setForm({...form,username:e.target.value})}}/>
             </FormGroup>
             <FormGroup>
               <Label for="email">Email</Label>
               <Input 
-                type="email" id="email" placeholder="eg: johndoe8" 
+                type="email" id="email" placeholder="example@email.com" 
                 value={form.email} 
                 onChange={(e)=>{setForm({...form,email:e.target.value})}}/>
             </FormGroup>

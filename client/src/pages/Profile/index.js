@@ -6,10 +6,10 @@ import ResponesiveImage from '../../components/ResponsiveImage'
 import './profile.scss'
 
 const Profile = () => {
-  const {username} = useParams()
+  const { username } = useParams()
   const [user] = useState({
     name: 'Irsyad Abdul Hamid D',
-    username,
+    username: username,
     email: 'abdulirsyad15@gmail.com',
     age: 22,
   })

@@ -1,0 +1,16 @@
+:root{
+  --theme-primary: #808dff;
+  --theme-accent: #e5eaff;
+}
+
+*:focus{
+  outline: none !important;
+}
+
+a{
+  text-decoration: none !important;
+}
+
+.upper-first::first-letter{
+  text-transform: uppercase !important;
+}

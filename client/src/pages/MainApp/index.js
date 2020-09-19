@@ -15,7 +15,6 @@ const MainApp = () => {
     {label: 'Rules',link: '/rules'},
   ]
   const user = {username: 'abdulirsyad'}
-  
   return (
     <div className='main-app'>
       <div className='header-wrapper sticky-top'>
