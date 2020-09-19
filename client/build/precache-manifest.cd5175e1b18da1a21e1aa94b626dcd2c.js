@@ -1,27 +1,27 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "851b879ed7457c9e3813988092456d0b",
+    "revision": "1320fe4a3c95a2014ef73b66e03c6161",
     "url": "/index.html"
   },
   {
-    "revision": "998762cf1e74900a075f",
+    "revision": "ec4bdd3fcba696943478",
     "url": "/static/css/2.d9ad5f5c.chunk.css"
   },
   {
-    "revision": "203ebd3669e3c99b0b03",
-    "url": "/static/css/main.60914631.chunk.css"
+    "revision": "879c879d43bb6b692dcc",
+    "url": "/static/css/main.41492bed.chunk.css"
   },
   {
-    "revision": "998762cf1e74900a075f",
-    "url": "/static/js/2.e8b0f784.chunk.js"
+    "revision": "ec4bdd3fcba696943478",
+    "url": "/static/js/2.ecb5dea3.chunk.js"
   },
   {
     "revision": "d2966845b94a3318bf32eecc7af8015d",
-    "url": "/static/js/2.e8b0f784.chunk.js.LICENSE.txt"
+    "url": "/static/js/2.ecb5dea3.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "203ebd3669e3c99b0b03",
-    "url": "/static/js/main.398de38f.chunk.js"
+    "revision": "879c879d43bb6b692dcc",
+    "url": "/static/js/main.e661e79e.chunk.js"
   },
   {
     "revision": "9b4e396c183e42c1fa5c",
@@ -50,6 +50,10 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "efa546a9c8f902e0d4c70a721517bf69",
     "url": "/static/media/luka-doncic.efa546a9.png"
+  },
+  {
+    "revision": "c9a48e585608adf4bb5a148caf7fc3d9",
+    "url": "/static/media/oooopss.c9a48e58.svg"
   },
   {
     "revision": "7b60ded75a691382e8401019b6fb0844",

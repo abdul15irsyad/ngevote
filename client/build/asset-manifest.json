@@ -1,32 +1,33 @@
 {
   "files": {
-    "main.css": "/static/css/main.60914631.chunk.css",
-    "main.js": "/static/js/main.398de38f.chunk.js",
-    "main.js.map": "/static/js/main.398de38f.chunk.js.map",
+    "main.css": "/static/css/main.41492bed.chunk.css",
+    "main.js": "/static/js/main.e661e79e.chunk.js",
+    "main.js.map": "/static/js/main.e661e79e.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.09b85ec0.js",
     "runtime-main.js.map": "/static/js/runtime-main.09b85ec0.js.map",
     "static/css/2.d9ad5f5c.chunk.css": "/static/css/2.d9ad5f5c.chunk.css",
-    "static/js/2.e8b0f784.chunk.js": "/static/js/2.e8b0f784.chunk.js",
-    "static/js/2.e8b0f784.chunk.js.map": "/static/js/2.e8b0f784.chunk.js.map",
+    "static/js/2.ecb5dea3.chunk.js": "/static/js/2.ecb5dea3.chunk.js",
+    "static/js/2.ecb5dea3.chunk.js.map": "/static/js/2.ecb5dea3.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.d452f0278b72ea93d007926e02d4d7e9.js": "/precache-manifest.d452f0278b72ea93d007926e02d4d7e9.js",
+    "precache-manifest.cd5175e1b18da1a21e1aa94b626dcd2c.js": "/precache-manifest.cd5175e1b18da1a21e1aa94b626dcd2c.js",
     "service-worker.js": "/service-worker.js",
     "static/css/2.d9ad5f5c.chunk.css.map": "/static/css/2.d9ad5f5c.chunk.css.map",
-    "static/css/main.60914631.chunk.css.map": "/static/css/main.60914631.chunk.css.map",
-    "static/js/2.e8b0f784.chunk.js.LICENSE.txt": "/static/js/2.e8b0f784.chunk.js.LICENSE.txt",
+    "static/css/main.41492bed.chunk.css.map": "/static/css/main.41492bed.chunk.css.map",
+    "static/js/2.ecb5dea3.chunk.js.LICENSE.txt": "/static/js/2.ecb5dea3.chunk.js.LICENSE.txt",
     "static/media/default-image.png": "/static/media/default-image.cf89e8e6.png",
     "static/media/giannis-antetokounmpo.png": "/static/media/giannis-antetokounmpo.0dc941b0.png",
     "static/media/jimmy-butler.png": "/static/media/jimmy-butler.46be4b3d.png",
     "static/media/klay-thompson.png": "/static/media/klay-thompson.555d7d42.png",
     "static/media/lebron-james.png": "/static/media/lebron-james.fdbac938.png",
     "static/media/luka-doncic.png": "/static/media/luka-doncic.efa546a9.png",
+    "static/media/oooopss.svg": "/static/media/oooopss.c9a48e58.svg",
     "static/media/stephen-curry.png": "/static/media/stephen-curry.7b60ded7.png"
   },
   "entrypoints": [
     "static/js/runtime-main.09b85ec0.js",
     "static/css/2.d9ad5f5c.chunk.css",
-    "static/js/2.e8b0f784.chunk.js",
-    "static/css/main.60914631.chunk.css",
-    "static/js/main.398de38f.chunk.js"
+    "static/js/2.ecb5dea3.chunk.js",
+    "static/css/main.41492bed.chunk.css",
+    "static/js/main.e661e79e.chunk.js"
   ]
 }
