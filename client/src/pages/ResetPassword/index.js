@@ -84,7 +84,7 @@ const ResetPassword = () => {
       <Row className='h-100 justify-content-center'>
         <Col md='6' lg='4'>
           <Form className='p-3' onSubmit={submitHandler}>
-            <h2 className='text-center'>Reset Password</h2>
+            <h2 className='text-center mb-4'>Reset Password</h2>
             <FormGroup>
               <Label for="password">Password</Label>
               <Input type="password" name="password" id="password" placeholder="*********"

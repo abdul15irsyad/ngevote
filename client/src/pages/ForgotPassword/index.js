@@ -41,7 +41,7 @@ const ForgotPassword = () => {
       <Row className='h-100 justify-content-center'>
         <Col md='6' lg='4'>
           <Form className='p-3' onSubmit={submitHandler}>
-            <h2 className='text-center'>Forgot Password</h2>
+            <h2 className='text-center mb-4'>Forgot Password</h2>
             <FormGroup>
               <Label for="email">Your Email</Label>
               <Input type="text" name="email" id="email" placeholder="example@email.com"
