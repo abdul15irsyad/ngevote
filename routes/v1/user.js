@@ -1,34 +1,12 @@
 const express = require('express')
 const router = express.Router()
 const bcrypt = require('bcrypt')
-
 const User = require('../../models/User')
+const Candidate = require('../../models/Candidate')
+const internalServerError = require('./internalServerError')
 
-router.get('/:id',(req,res)=>{
-  try{
-    let id = req.params.id
-    User.findById(id,'-password').exec((err,user)=>{
-      if(user){
-        res.status(200).json({
-          status: true,
-          data: user
-        })
-      }else{
-        res.status(404).json({
-          status: false,
-          message: "user not found !",
-        })
-      }
-    })
-  }catch(err){
-    res.status(500).json({
-      message:'interal server error !',
-      error:err.message
-    })
-  }
-})
-
-router.get('/',(req,res)=>{
+// get all users
+router.get('/all',(req,res)=>{
   try{
     let {page,perpage,sort} = req.query
     sort = sort == 'desc' ? -1 : 1
@@ -47,78 +25,40 @@ router.get('/',(req,res)=>{
       })
     })
   }catch(err){
-    res.status(500).json({
-      message:'interal server error !',
-      error:err.message
-    })
+    internalServerError(err,res)
   }
 })
 
-router.post('/',async (req,res)=>{
+// get user by username (query)
+router.get('/',async(req,res)=>{
   try{
-    User.create({
-      name: req.body.name,
-      age: req.body.age,
-      username: req.body.username,
-      password: await bcrypt.hash(req.body.password,10),
-    },(err,user)=>{
+    let { username } = req.query
+    let user = await User.findOne({username,isActive:true})
+    if(user && user.isActive){
+      res.status(200).json({
+        status: true,
+        data: user
+      })
+    }else{
+      res.status(400).json({
+        status: false,
+        message: 'User not found.'
+      })
+    }
+  }catch(err){
+    internalServerError(err,res)
+  }
+})
+
+// get user by id (param)
+router.get('/:id',(req,res)=>{
+  try{
+    let id = req.params.id
+    User.findById(id,'-password').exec((err,user)=>{
       if(user){
-        user.password = undefined
-        res.status(201).json({
+        res.status(200).json({
           status: true,
           data: user
-        })
-      }else{
-        res.status(400).json({
-          status: false,
-          message: err.message
-        })
-      }
-    })
-  }catch(err){
-    res.status(500).json({
-      message:'interal server error !',
-      error:err.message
-    })
-  }
-})
-
-router.patch('/:id',async (req,res)=>{
-  try{
-    let id = req.params.id
-    if(req.body.password) req.body.password = await bcrypt.hash(req.body.password,10)
-    User.findByIdAndUpdate(id,{
-      $set: req.body
-    },async (err,user)=>{
-      if(user){
-        res.status(200).json({
-          status: true,
-          data: await User.findById(id).select('-password')
-        })
-      }else{
-        res.status(404).json({
-          status: false,
-          message: "user not found !"
-        })
-      }
-    })
-  }catch(err){
-    res.status(500).json({
-      message:'interal server error !',
-      error:err.message
-    })
-  }
-})
-
-router.delete('/:id',(req,res)=>{
-  try{
-    let id = req.params.id
-    User.findById(id,async (err,user)=>{
-      if(user){
-        res.status(200).json({
-          status: true,
-          message: "success delete user !",
-          data: await User.findByIdAndRemove(id).select('-password')
         })
       }else{
         res.status(404).json({
@@ -128,10 +68,71 @@ router.delete('/:id',(req,res)=>{
       }
     })
   }catch(err){
-    res.status(500).json({
-      message:'interal server error !',
-      error:err.message
+    internalServerError(err,res)
+  }
+})
+
+// edit user by id
+router.patch('/:id',async (req,res)=>{
+  try{
+    let _id = req.params.id
+    User.findById(_id).exec(async(err,user)=>{
+      if(user){
+        let newUser = req.body
+        if(newUser.newPassword){
+          if(await bcrypt.compare(newUser.oldPassword,user.password)){
+            newUser.password = await bcrypt.hash(newUser.newPassword,10)
+          }else{
+            return res.status(400).json({
+              status: false,
+              message: 'Old password incorrect.'
+            })
+          }
+        }
+        User.findByIdAndUpdate(_id,{ $set: newUser })
+          .exec(async(err,user)=>{
+            return res.status(200).json({
+              status: true,
+              data: await User.findById(_id).select('-password')
+            })
+          })
+      }else{
+        return res.status(400).json({
+          status: false,
+          message: 'User not found.'
+        })
+      }
     })
+  }catch(err){
+    internalServerError(err,res)
+  }
+})
+
+// delete user by id
+router.delete('/:id',(req,res)=>{
+  try{
+    let id = req.params.id
+    User.findById(id,async(err,user)=>{
+      if(user){
+        if(user.isCandidate){
+          Candidate.findOneAndDelete({user:user._id})
+        }
+        User.findByIdAndRemove(id)
+          .exec(()=>{
+            res.status(200).json({
+              status: true,
+              message: "success delete user !"
+            })
+          })
+      }else{
+        res.status(404).json({
+          status: false,
+          message: "user not found !",
+        })
+      }
+    })
+  }catch(err){
+    internalServerError(err,res)
   }
 })
 

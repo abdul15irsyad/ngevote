@@ -4,10 +4,14 @@ const mongoosePaginate = require('mongoose-paginate-v2')
 
 const userSchema = new Schema({
   name: { type: String, required: true },
-  age:{ type: Number, required: true },
-  username: { type: String, required: true, unique: true, trim:true, index: true },
+  age:{ type: Number },
+  username: { type: String, required: true, unique: true, trim:true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true, minlength:8 },
+  motto: { type: String },
+  achievement: [{ type: String }],
+  history: { type: String },
+  isCandidate: { type: Boolean, default: false },
   isActive: { type: Boolean, default: false }
 },{
   versionKey: false,

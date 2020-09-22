@@ -16,10 +16,21 @@ import {
 } from 'reactstrap'
 import './header.scss'
 
-const Header = ({title,menus,user}) => {
+const Header = ({title,logout,user}) => {
+  // static state
+  const menus = [
+    {label: 'Vote Now',link: '/vote-now'},
+    {label: 'Rules',link: '/rules'},
+  ]
+  // state
   const [isOpen, setIsOpen] = useState(false);
+  // method
   const toggle = () => setIsOpen(!isOpen);
   const close = () => setIsOpen(false)
+  const logOutHandler = () => {
+    close()
+    logout()
+  }
   return (
     <Navbar color="light" light expand="md" className='shadow'>
       <Container>
@@ -28,7 +39,7 @@ const Header = ({title,menus,user}) => {
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mx-auto" navbar>
             {menus.map((menu,index)=>{
-              return(
+              return (
                 <NavItem key={index} className='mx-1'>
                   <NavLink tag={Link} to={menu.link} onClick={close}>{menu.label}</NavLink>
                 </NavItem>
@@ -41,10 +52,10 @@ const Header = ({title,menus,user}) => {
                 {user.username}
               </DropdownToggle>
               <DropdownMenu right>
-                <DropdownItem tag={Link} to='/profile/abdul15irsyad' onClick={close}>Profile</DropdownItem>
+                <DropdownItem tag={Link} to={'/profile/'+user.username} onClick={close}>Profile</DropdownItem>
                 <DropdownItem tag={Link} to='/settings' onClick={close}>Settings</DropdownItem>
                 <DropdownItem divider />
-                <DropdownItem tag={Link} to='/login' onClick={close}>Log Out</DropdownItem>
+                <DropdownItem onClick={logOutHandler}>Log Out</DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
           </Nav>

@@ -3,37 +3,77 @@ const router = express.Router()
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const { checkAuthToken, checkResetToken } = require('../../middleware/authMiddleware')
-
 const User = require('../../models/User')
+const { validationResult } = require('express-validator')
+const { registerValidator } = require('../validators/authValidators')
+const internalServerError = require('./internalServerError')
 
-router.post('/', async (req,res) => {
+// login user
+router.post('/login', async (req,res) => {
   try{
     let { username, password } = req.body
     let user = await User.findOne({
       $or: [{ username },{ email: username }]
     })
     if(user && await bcrypt.compare(password,user.password)){
-      let { id, username } = user
-      let token = jwt.sign({ id, username, type: 'auth' }, process.env.SECRET_KEY,{expiresIn:"1 days"})
-      return res.status(200).json({
-        status: true,
-        message: 'login success',
-        token
-      })
+      if(user.isActive){
+        let { id, username } = user
+        let token = jwt.sign({ id, username, type: 'auth' }, process.env.SECRET_KEY,{expiresIn:"1 days"})
+        return res.status(200).json({
+          status: true,
+          message: 'Login success.',
+          token
+        })
+      }else{
+        return res.status(400).json({
+          status: false,
+          message: 'You are not active yet.',
+        })
+      }
     }else{
       return res.status(400).json({
         status: false,
-        message: 'Username or Password is incorrect.'
+        message: 'Email or Password is incorrect.'
       })
     }
   }catch(err){
-    res.status(500).json({
-      message:'interal server error !',
-      error:err.message
-    })
+    internalServerError(err,res)
   }
 })
 
+// register user
+router.post('/register',registerValidator,async(req,res)=>{
+  try{
+    // if validation failed
+    let errors = validationResult(req)
+    if(!errors.isEmpty()) {
+      return res.status(400).json({
+        success:false,
+        errors: errors.array({onlyFirstError:true})
+      })
+    }
+    // if validation has been successful
+    let user = req.body
+    user.password = await bcrypt.hash(user.password,10)
+    User.create(user,async(err,user)=>{
+      if(user){
+        res.status(201).json({
+          status: true,
+          data: await User.findById(user._id,'-password')
+        })
+      }else{
+        res.status(400).json({
+          status: false,
+          message: err.message
+        })
+      }
+    })
+  }catch(err){
+    internalServerError(err,res)
+  }
+})
+
+// check token
 router.get('/', checkAuthToken, async (req,res) => {
   try{
     let user = await User.findById(req.user.id).select('-password')
@@ -42,13 +82,11 @@ router.get('/', checkAuthToken, async (req,res) => {
       data: user
     })
   }catch(err){
-    return res.status(400).json({
-      status: false,
-      error: err.message
-    })
+    internalServerError(err,res)
   }
 })
 
+// forgot password
 router.post('/forgot-password', async (req,res) => {
   try{
     let { email } = req.body
@@ -70,24 +108,19 @@ router.post('/forgot-password', async (req,res) => {
       })
     }
   }catch(err){
-    return res.status(500).json({
-      message:'interal server error !',
-      error:err.message
-    })
+    internalServerError(err,res)
   }
 })
 
-router.get('/check-token', checkResetToken, async (req,res) => {
+// check reset token
+router.get('/check-reset-token', checkResetToken, async (req,res) => {
   try{
     res.status(200).json({
       status: true,
       message: 'token valid'
     })
   }catch(err){
-    return res.status(500).json({
-      message:'interal server error !',
-      error:err.message
-    })
+    internalServerError(err,res)
   }
 })
 
@@ -100,10 +133,7 @@ router.post('/reset-password', checkResetToken, async (req,res) => {
       message: 'success reset password, please login with your new password'
     })
   }catch(err){
-    return res.status(500).json({
-      message:'interal server error !',
-      error:err.message
-    })
+    internalServerError(err,res)
   }
 })
 

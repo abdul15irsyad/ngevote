@@ -10,7 +10,7 @@ const ResponesiveImage = ({src,alt,aspectRatio,borderRadius,objectFit}) => {
     objectFit: objectFit || 'cover'
   }
   return (
-    <div className='responsive-image bg-light' style={styleWrapper}>
+    <div className='responsive-image' style={styleWrapper}>
       <img src={src} alt={alt} style={styleImage}/>
     </div>
   )

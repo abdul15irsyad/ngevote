@@ -6,6 +6,7 @@ import GiannisAntetokounmpoImage from './images/candidates/giannis-antetokounmpo
 import JimmyButlerImage from './images/candidates/jimmy-butler.png'
 import LukaDoncicImage from './images/candidates/luka-doncic.png'
 import OopsImage from './images/oooopss.svg'
+import PageNotFound from './images/page-not-found.svg'
 
 export {
   DefaultImage, 
@@ -15,5 +16,6 @@ export {
   GiannisAntetokounmpoImage,
   JimmyButlerImage,
   LukaDoncicImage,
-  OopsImage
+  OopsImage,
+  PageNotFound
 }

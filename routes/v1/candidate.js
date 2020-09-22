@@ -1,22 +1,19 @@
 const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose')
-
 const Candidate = require('../../models/Candidate')
 const User = require('../../models/User')
+const internalServerError = require('./internalServerError')
 
-router.get('/',async(req,res)=>{
+router.get('/all',async(req,res)=>{
   try{
-    let candidates = await Candidate.find().populate('user','-password -hashedPassword -_id')
+    let candidates = await Candidate.find().populate('user','-password -_id')
     res.status(200).json({
       status: true,
       data: candidates
     })
   }catch(err){
-    res.status(500).json({
-      message:'interal server error !',
-      error:err.message
-    })
+    internalServerError(err,res)
   }
 })
 
@@ -24,7 +21,7 @@ router.get('/:id',async(req,res)=>{
   try{
     let id = req.params.id
     Candidate.findById(id)
-      .populate('user','-password -hashedPassword -_id')
+      .populate('user','-password -_id')
       .exec((err,candidate)=>{
         if(candidate){
           res.status(200).json({
@@ -39,10 +36,7 @@ router.get('/:id',async(req,res)=>{
         }
       })    
   }catch(err){
-    res.status(500).json({
-      message:'interal server error !',
-      error:err.message
-    })
+    internalServerError(err,res)
   }
 })
 
@@ -61,17 +55,24 @@ router.post('/:id',async(req,res)=>{
     if(candidate){
       return res.status(400).json({
         status: false,
-        message: `${candidate.user.name} already a candidate`
+        message: 'already a candidate'
       })
     }
     Candidate.create({
       user: id,
-      motto: req.body.motto,
-    },async(err,newCandidate)=>{
+    },(err,newCandidate)=>{
       if(newCandidate){
-        res.status(201).json({
-          status: true,
-          data: await Candidate.findById(newCandidate._id).populate('user','-password -hashedPassword -_id')
+        let { motto, achievement, history } = req.body
+        User.findByIdAndUpdate(newCandidate.user,{
+          isCandidate: true,
+          motto,
+          achievement,
+          history
+        }).exec(async()=>{
+          res.status(201).json({
+            status: true,
+            data: await Candidate.findById(newCandidate._id).populate('user','-password -_id')
+          })
         })
       }else{
         res.status(400).json({
@@ -81,23 +82,22 @@ router.post('/:id',async(req,res)=>{
       }
     })
   }catch(err){
-    res.status(500).json({
-      message:'interal server error !',
-      error:err.message
-    })
+    internalServerError(err,res)
   }
 })
 
 router.patch('/:id',(req,res)=>{
   try{
     let id = req.params.id
-    Candidate.findByIdAndUpdate(id,{
-      $set: req.body
-    },async(err,candidate)=>{
+    Candidate.findById(id).exec((err,candidate)=>{
       if(candidate){
-        res.status(200).json({
-          status: true,
-          data: await Candidate.findById(id).populate('user','-password -hashedPassword -_id')
+        User.findByIdAndUpdate(id,{
+          $set: req.body
+        },async(err,user)=>{
+          res.status(200).json({
+            status: true,
+            data: await Candidate.findById(id).populate('user','-password -_id')
+          })
         })
       }else{
         res.status(404).json({
@@ -106,24 +106,24 @@ router.patch('/:id',(req,res)=>{
         })
       }
     })
-
   }catch(err){
-    res.status(500).json({
-      message:'interal server error !',
-      error:err.message
-    })
+    internalServerError(err,res)
   }
 })
 
 router.delete('/:id',(req,res)=>{
   try{
     let id = req.params.id
-    Candidate.findById(id,async (err,candidate)=>{
+    Candidate.findById(id,(err,candidate)=>{
       if(candidate){
-        res.status(200).json({
-          status: true,
-          message: "success delete candidate !",
-          data: await Candidate.findByIdAndRemove(id).populate('user','-password -hashedPassword -_id')
+        User.findByIdAndUpdate(id,{
+          isCandidate: false,
+        }).exec(async(err,user)=>{
+          res.status(200).json({
+            status: true,
+            message: "Candidate deleted.",
+            data: await Candidate.findByIdAndRemove(id,'-user')
+          })
         })
       }else{
         res.status(404).json({
@@ -133,10 +133,7 @@ router.delete('/:id',(req,res)=>{
       }
     })
   }catch(err){
-    res.status(500).json({
-      message:'interal server error !',
-      error:err.message
-    })
+    internalServerError(err,res)
   }
 })
 

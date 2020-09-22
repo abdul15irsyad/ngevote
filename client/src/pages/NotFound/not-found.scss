@@ -1,0 +1,15 @@
+.not-found{
+  max-height: 100vh;
+  
+  .row{
+    padding-top: 3vh;
+    
+  }
+
+  // mobile
+  @media screen and (max-width: 480px) {
+    .row{
+      padding-top: 13vh;
+    }
+  }
+}

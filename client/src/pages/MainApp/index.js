@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import { Footer, Header } from '../../components'
+import { AuthContext } from '../../context/AuthContext/authContext'
 import EditProfile from '../EditProfile'
 import Home from '../Home'
+import NotFound from '../NotFound'
 import Profile from '../Profile'
 import Rules from '../Rules'
 import Settings from '../Settings'
@@ -10,15 +12,17 @@ import VoteNow from '../VoteNow'
 import './main-app.scss'
 
 const MainApp = () => {
-  const menus = [
-    {label: 'Vote Now',link: '/vote-now'},
-    {label: 'Rules',link: '/rules'},
-  ]
-  const user = {username: 'abdulirsyad'}
+  // state
+  const { auth,dispatch } = useContext(AuthContext)
+  const { user } = auth
+  const logout = () => {
+    localStorage.removeItem('token')
+    dispatch({type:'LOGOUT'})
+  }
   return (
     <div className='main-app'>
       <div className='header-wrapper sticky-top'>
-        <Header title='Ngevote' menus={menus} user={user}/>
+        <Header title='Ngevote' user={user} logout={logout}/>
       </div>
       <div className='content-wrapper'>
         <Switch>
@@ -28,6 +32,7 @@ const MainApp = () => {
           <Route exact path='/settings' component={Settings}/>
           <Route exact path='/vote-now' component={VoteNow}/>
           <Route exact path='/' component={Home}/>
+          <Route path='/*' component={NotFound} />
         </Switch>
       </div>
       <div className='footer-wrapper'>

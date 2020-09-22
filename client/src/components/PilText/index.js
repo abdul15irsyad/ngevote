@@ -8,7 +8,7 @@ const PilText = ({text,isValid}) => {
     color: isValid ? 'rgba(0,0,0, .8)' : 'rgba(0,0,0, .3)'
   }
   return (
-    <div className='pil-text text-capitalize mr-1 mb-1' style={style}>{text}</div>
+    <div className='pil-text mr-1 mb-1' style={style}>{text}</div>
   )
 }
 
