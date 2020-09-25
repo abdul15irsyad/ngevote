@@ -11,16 +11,19 @@ const AuthContextProvider = (props) => {
     user: {}
   })
   useEffect(()=>{
-    const userToken = localStorage.getItem('token') || ''
-    axios.get(ROOT_API+'/auth',{ headers:{ 'x-auth-token': userToken }})
-      .then(res=>{
-        dispatch({type:'INIT_USER', user:res.data.data, isAuthenticated: true})
-      })
-      .catch(err=>{
-        dispatch({type:'INIT_USER',user:{}, isAuthenticated: false})
-        localStorage.removeItem('token')
-        console.log(auth)
-      })
+    const userToken = localStorage.getItem('token')
+    if(userToken){
+      axios.get(ROOT_API+'/auth',{ headers:{ 'x-auth-token': userToken }})
+        .then(res=>{
+          dispatch({type:'INIT_USER', user:res.data.data, isAuthenticated: true})
+        })
+        .catch(err=>{
+          dispatch({type:'INIT_USER',user:{}, isAuthenticated: false})
+          localStorage.removeItem('token')
+        })
+    }else{
+      dispatch({type:'INIT_USER',user:{}, isAuthenticated: false})
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
   return (

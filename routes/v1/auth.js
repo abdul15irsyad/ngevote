@@ -5,8 +5,8 @@ const jwt = require('jsonwebtoken')
 const { checkAuthToken, checkResetToken } = require('../../middleware/authMiddleware')
 const User = require('../../models/User')
 const { validationResult } = require('express-validator')
-const { registerValidator } = require('../validators/authValidators')
-const internalServerError = require('./internalServerError')
+const { registerValidator, resetPasswordValidator } = require('../validators/authValidators')
+const { internalServerError } = require('./response')
 
 // login user
 router.post('/login', async (req,res) => {
@@ -48,7 +48,8 @@ router.post('/register',registerValidator,async(req,res)=>{
     let errors = validationResult(req)
     if(!errors.isEmpty()) {
       return res.status(400).json({
-        success:false,
+        status:false,
+        message: 'Inputs not valid.',
         errors: errors.array({onlyFirstError:true})
       })
     }
@@ -104,7 +105,7 @@ router.post('/forgot-password', async (req,res) => {
     }else{
       return res.status(400).json({
         status: false,
-        message: 'user with this email not found'
+        message: 'User with this email not found.'
       })
     }
   }catch(err){
@@ -124,13 +125,23 @@ router.get('/check-reset-token', checkResetToken, async (req,res) => {
   }
 })
 
-router.post('/reset-password', checkResetToken, async (req,res) => {
+// reset password
+router.post('/reset-password', [checkResetToken,resetPasswordValidator] , async (req,res) => {
   try{
+    // if validation failed
+    let errors = validationResult(req)
+    if(!errors.isEmpty()) {
+      return res.status(400).json({
+        status:false,
+        message: 'Inputs not valid.',
+        errors: errors.array({onlyFirstError:true})
+      })
+    }
+    // if validation has been successful
     const { password, confirmPassword } = req.body
-    console.log(password)
     return res.status(200).json({
       status: true,
-      message: 'success reset password, please login with your new password'
+      message: 'Success reset password, please login with your new password.'
     })
   }catch(err){
     internalServerError(err,res)

@@ -13,6 +13,11 @@ const authReducer = (state,action) => {
         user: {},
         isAuthenticated: false
       }
+    case 'EDIT_USER':
+      return {
+        ...state,
+        user: action.user,
+      }
     default:
       return state
   }

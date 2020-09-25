@@ -15,7 +15,8 @@ const Register = () => {
     password:'',
     confirmPassword:''
   })
-  const [alert,setAlert] = useState(false)
+  const [alert] = useState(false)
+  const [successLogin,setSuccessLogin] = useState(false)
   // method
   const submitHandler = (e) => {
     e.preventDefault()
@@ -31,14 +32,12 @@ const Register = () => {
           password:'',
           confirmPassword:''
         })
-        setAlert({color:'success',message:'Register Success, please login.'})
-        console.log(res)
+        setSuccessLogin('Register Success, please login with your email and password.')
       })
       .catch(err => {
-        setForm({...form,password:''})
-        console.log(err.response.data.message)
+        setForm({...form,password:'',confirmPassword:''})
+        console.log(err.response.data)
       })
-    console.log(form)
   }
   return (
     <Container className='register'>
@@ -46,43 +45,47 @@ const Register = () => {
         <Col md='6' lg='5'>
           <Form className='p-3' onSubmit={submitHandler}>
             <h2 className='text-center mb-4'>Register</h2>
-            <FormGroup>
-              <Label for="name">Full Name</Label>
-              <Input 
-                type="text" id="name" placeholder="John Doe" 
-                value={form.name}
-                onChange={(e)=>{setForm({...form,name:e.target.value})}}/>
-            </FormGroup>
-            <FormGroup>
-              <Label for="username">Username</Label>
-              <Input 
-                type="text" id="username" placeholder="johndoe8" 
-                value={form.username} 
-                onChange={(e)=>{setForm({...form,username:e.target.value})}}/>
-            </FormGroup>
-            <FormGroup>
-              <Label for="email">Email</Label>
-              <Input 
-                type="text" id="email" placeholder="example@email.com" 
-                value={form.email}
-                onChange={(e)=>{setForm({...form,email:e.target.value})}}/>
-            </FormGroup>
-            <FormGroup>
-              <Label for="password">Password</Label>
-              <Input type="password" id="password" placeholder="********" 
-                value={form.password}
-                onChange={(e)=>{setForm({...form,password:e.target.value})}}/>
-            </FormGroup>
-            <FormGroup>
-              <Label for="confirmPassword">Confirm Password</Label>
-              <Input type="password" id="confirmPassword" placeholder="********" 
-                value={form.confirmPassword}
-                onChange={(e)=>{setForm({...form,confirmPassword:e.target.value})}}/>
-            </FormGroup>
-            {alert && (
-              <Alert color={alert.color || 'warning'} className='text-center upper-first py-1'>{alert.message}</Alert>
-            )}
-            <Button type='submit' color='primary' className='btn-block mt-3'>Register</Button>
+            {successLogin ? (
+              <Alert color='success' className='text-center upper-first py-1'>{successLogin}</Alert>
+            ) : (<>
+              <FormGroup>
+                <Label for="name">Full Name</Label>
+                <Input 
+                  type="text" id="name" placeholder="John Doe" 
+                  value={form.name}
+                  onChange={(e)=>{setForm({...form,name:e.target.value})}}/>
+              </FormGroup>
+              <FormGroup>
+                <Label for="username">Username</Label>
+                <Input 
+                  type="text" id="username" placeholder="johndoe8" 
+                  value={form.username} 
+                  onChange={(e)=>{setForm({...form,username:e.target.value})}}/>
+              </FormGroup>
+              <FormGroup>
+                <Label for="email">Email</Label>
+                <Input 
+                  type="text" id="email" placeholder="example@email.com" 
+                  value={form.email}
+                  onChange={(e)=>{setForm({...form,email:e.target.value})}}/>
+              </FormGroup>
+              <FormGroup>
+                <Label for="password">Password</Label>
+                <Input type="password" id="password" placeholder="********" 
+                  value={form.password}
+                  onChange={(e)=>{setForm({...form,password:e.target.value})}}/>
+              </FormGroup>
+              <FormGroup>
+                <Label for="confirmPassword">Confirm Password</Label>
+                <Input type="password" id="confirmPassword" placeholder="********" 
+                  value={form.confirmPassword}
+                  onChange={(e)=>{setForm({...form,confirmPassword:e.target.value})}}/>
+              </FormGroup>
+              {alert && (
+                <Alert color={alert.color || 'warning'} className='text-center upper-first py-1'>{alert.message}</Alert>
+              )}
+              <Button type='submit' color='primary' className='btn-block mt-3'>Register</Button>
+            </>)}
             <div className='have-account-link text-center pt-3'>
               <span>Have an account? </span>
               <Link to='/login' className='text-dark'>Login</Link>

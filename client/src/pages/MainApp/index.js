@@ -26,7 +26,7 @@ const MainApp = () => {
       </div>
       <div className='content-wrapper'>
         <Switch>
-          <Route exact path='/profile/:username/edit' component={EditProfile}/>
+          <Route exact path='/profile/edit' component={EditProfile}/>
           <Route exact path='/profile/:username' component={Profile}/>
           <Route exact path='/rules' component={Rules}/>
           <Route exact path='/settings' component={Settings}/>

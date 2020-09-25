@@ -41,7 +41,7 @@ const Profile = () => {
                   <h3 className='text-capitalize mb-0'>{user.name}</h3>
                   <p className='mb-0 text-secondary'>{user.username} {user.age && `. ${user.age} years old` } </p>
                   <p className='mb-3 text-secondary'>{user.email}</p>
-                  <Button tag={Link} to='/profile/abdul15irsyad/edit' color='primary' className='btn-edit-profile mt-auto'>Edit Profile</Button>
+                  <Button tag={Link} to='/profile/edit' color='primary' className='btn-edit-profile mt-auto'>Edit Profile</Button>
                 </div>
               </Col>
             </Row>

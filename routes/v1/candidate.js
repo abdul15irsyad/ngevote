@@ -1,15 +1,16 @@
 const express = require('express')
 const router = express.Router()
-const mongoose = require('mongoose')
 const Candidate = require('../../models/Candidate')
 const User = require('../../models/User')
-const internalServerError = require('./internalServerError')
+const { internalServerError } = require('./response')
 
+// get all candidates
 router.get('/all',async(req,res)=>{
   try{
-    let candidates = await Candidate.find().populate('user','-password -_id')
+    let candidates = await Candidate.find().populate('user','-password')
     res.status(200).json({
       status: true,
+      message: 'Get all candidates.',
       data: candidates
     })
   }catch(err){
@@ -17,11 +18,12 @@ router.get('/all',async(req,res)=>{
   }
 })
 
+// get a candidate by id (params)
 router.get('/:id',async(req,res)=>{
   try{
     let id = req.params.id
     Candidate.findById(id)
-      .populate('user','-password -_id')
+      .populate('user','-password')
       .exec((err,candidate)=>{
         if(candidate){
           res.status(200).json({
@@ -31,7 +33,7 @@ router.get('/:id',async(req,res)=>{
         }else{
           res.status(404).json({
             status: false,
-            message: "user not found !",
+            message: "Candidate not found.",
           })
         }
       })    
@@ -40,6 +42,7 @@ router.get('/:id',async(req,res)=>{
   }
 })
 
+// set user to be a candidate
 router.post('/:id',async(req,res)=>{
   try{
     let id = req.params.id
@@ -47,7 +50,7 @@ router.post('/:id',async(req,res)=>{
       if(!user){
         return res.status(404).json({
           status: false,
-          message: `user not found`
+          message: 'User not found.'
         })
       }
     })
@@ -55,7 +58,7 @@ router.post('/:id',async(req,res)=>{
     if(candidate){
       return res.status(400).json({
         status: false,
-        message: 'already a candidate'
+        message: 'Already a candidate.'
       })
     }
     Candidate.create({
@@ -77,7 +80,8 @@ router.post('/:id',async(req,res)=>{
       }else{
         res.status(400).json({
           status: false,
-          message: err.message
+          message: 'Failed set a candidate.',
+          error: err.message
         })
       }
     })
@@ -86,6 +90,7 @@ router.post('/:id',async(req,res)=>{
   }
 })
 
+// edit candidate by id
 router.patch('/:id',(req,res)=>{
   try{
     let id = req.params.id
@@ -96,13 +101,13 @@ router.patch('/:id',(req,res)=>{
         },async(err,user)=>{
           res.status(200).json({
             status: true,
-            data: await Candidate.findById(id).populate('user','-password -_id')
+            message: 'Candidate updated.',
           })
         })
       }else{
         res.status(404).json({
           status: false,
-          message: "candidate not found !"
+          message: "Candidate not found."
         })
       }
     })
@@ -111,6 +116,7 @@ router.patch('/:id',(req,res)=>{
   }
 })
 
+// delete a candidate
 router.delete('/:id',(req,res)=>{
   try{
     let id = req.params.id
@@ -128,7 +134,7 @@ router.delete('/:id',(req,res)=>{
       }else{
         res.status(404).json({
           status: false,
-          message: "candidate not found !",
+          message: "Candidate not found.",
         })
       }
     })

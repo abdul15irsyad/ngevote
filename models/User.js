@@ -12,7 +12,7 @@ const userSchema = new Schema({
   achievement: [{ type: String }],
   history: { type: String },
   isCandidate: { type: Boolean, default: false },
-  isActive: { type: Boolean, default: false }
+  isActive: { type: Boolean, default: true }
 },{
   versionKey: false,
   timestamps: true

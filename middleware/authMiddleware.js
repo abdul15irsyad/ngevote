@@ -30,7 +30,7 @@ module.exports = {
   },
   checkResetToken: (req,res,next)=>{
     try{
-      let authToken = req.header('x-auth-token')
+      let authToken = req.header('x-reset-token')
       if(!authToken){
         return res.status(401).json({
           status: false,

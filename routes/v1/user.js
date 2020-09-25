@@ -1,9 +1,11 @@
 const express = require('express')
+const { validationResult } = require('express-validator')
 const router = express.Router()
 const bcrypt = require('bcrypt')
 const User = require('../../models/User')
 const Candidate = require('../../models/Candidate')
-const internalServerError = require('./internalServerError')
+const {internalServerError} = require('./response')
+const { editUserValidator, changePasswordValidator } = require('../validators/userValidators')
 
 // get all users
 router.get('/all',(req,res)=>{
@@ -72,34 +74,72 @@ router.get('/:id',(req,res)=>{
   }
 })
 
-// edit user by id
-router.patch('/:id',async (req,res)=>{
+// edit user profile by id
+router.patch('/:id/profile', editUserValidator ,async (req,res)=>{
   try{
-    let _id = req.params.id
-    User.findById(_id).exec(async(err,user)=>{
+    // if validation failed
+    let errors = validationResult(req)
+    if(!errors.isEmpty()) {
+      return res.status(400).json({
+        status:false,
+        message: 'Inputs not valid.',
+        errors: errors.array({onlyFirstError:true})
+      })
+    }
+    // if validation has been successful
+    let id = req.params.id
+    User.findById(id).exec(async(err,user)=>{
       if(user){
-        let newUser = req.body
-        if(newUser.newPassword){
-          if(await bcrypt.compare(newUser.oldPassword,user.password)){
-            newUser.password = await bcrypt.hash(newUser.newPassword,10)
-          }else{
-            return res.status(400).json({
-              status: false,
-              message: 'Old password incorrect.'
-            })
-          }
-        }
-        User.findByIdAndUpdate(_id,{ $set: newUser })
+        let { name,age,username,email } = req.body
+        User.findByIdAndUpdate(id,{ name,age,username,email })
           .exec(async(err,user)=>{
             return res.status(200).json({
               status: true,
-              data: await User.findById(_id).select('-password')
+              message: 'User updated.',
+              data: await User.findById(user._id).select('-password')
             })
           })
       }else{
         return res.status(400).json({
           status: false,
           message: 'User not found.'
+        })
+      }
+    })
+  }catch(err){
+    internalServerError(err,res)
+  }
+})
+
+// change password by id
+router.patch('/:id/password', changePasswordValidator ,async (req,res)=>{
+  try{
+    // if validation failed
+    let errors = validationResult(req)
+    if(!errors.isEmpty()) {
+      return res.status(400).json({
+        status:false,
+        message: 'Inputs not valid.',
+        errors: errors.array({onlyFirstError:true})
+      })
+    }
+    // if validation has been successful
+    let id = req.params.id
+    User.findById(id).exec(async(err,user)=>{
+      let { oldPassword,newPassword } = req.body
+      if(user && await bcrypt.compare(oldPassword,user.password)){
+        const password = await bcrypt.hash(newPassword,10) 
+        User.findByIdAndUpdate(id,{ password })
+          .exec(async(err,user)=>{
+            return res.status(200).json({
+              status: true,
+              message: 'Password updated.',
+            })
+          })
+      }else{
+        return res.status(400).json({
+          status: false,
+          message: 'Old password incorrect.'
         })
       }
     })
@@ -121,13 +161,13 @@ router.delete('/:id',(req,res)=>{
           .exec(()=>{
             res.status(200).json({
               status: true,
-              message: "success delete user !"
+              message: "User deleted."
             })
           })
       }else{
         res.status(404).json({
           status: false,
-          message: "user not found !",
+          message: "User not found.",
         })
       }
     })
